@@ -1,0 +1,7 @@
+rdiv0.lo: rdiv0.c /usr/include/stdc-predef.h cim.h ../config.h
+
+/usr/include/stdc-predef.h:
+
+cim.h:
+
+../config.h:

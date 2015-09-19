@@ -1,0 +1,103 @@
+#! /bin/sh
+
+CC='gcc -g -O2'
+CFLAGS=''
+CFLAGS_ADD=
+LDFLAGS=''
+LDFLAGS_ADD=
+wl='-Wl,'
+link_static_flag="-static"
+pic_flag=" -fPIC -DPIC"
+
+prev=
+for option
+do
+  if test -n "$prev"; then
+    eval "$prev=\$option"
+    prev=
+    if test -n "$CFLAGS_ADD"; then
+      CFLAGS="$CFLAGS $option"
+      CFLAGS_ADD=
+    fi
+    if test -n "$LDFLAGS_ADD"; then
+      LDFLAGS="$LDFLAGS $option"
+      LDFLAGS_ADD=
+    fi
+    continue
+  fi
+
+  case "$option" in
+  -*=*) optarg=`echo "$option" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+  *) optarg= ;;
+  esac
+
+  case "$option" in
+  -c | --suppress-linking | -suppress-linking)
+    option_nolink=yes ;;
+  -e | --static | -static)
+  LDFLAGS="$LDFLAGS $link_static_flag" ;;
+  -G | --gcc | -gcc)
+    CC='gcc -g -O2'; static_flag='-static'; 
+    pic_flag=' -fPIC' ;;
+  -q | --quiet | --silent | -quiet | -silent)
+    option_quiet=yes ; option_verbose= ;;
+  -v | --verbose | -verbose)     option_quiet= ; option_verbose=yes ;;
+  -p | --pic | -pic)
+  CFLAGS="$CFLAGS $pic_flag" ;;
+  -P | --only-link | -only-link)
+    option_nocc=yes ;;
+  -t | --dont-remove-temporaries | -dont-remove-temporaries)
+    option_notempdel=yes ;;
+  -s | --no-simula-compile | -no-simula-compile)
+    option_notempdel=yes ;;
+  -S | --only-simula-compile | -only-simula-compile)
+    option_nolink=yes; option_nocc=yes ;;
+  -d | --compare | -compare)     option_checkdiff=yes; option_notempdel=yes ;;
+
+  -b | --cflags | -cflags)
+    prev=CFLAGS_ADD ;;
+  -B | --ldflags | -ldflags)
+    prev=LDFLAGS_ADD ;;
+  -C | --c-compiler | -c-compiler)
+    prev=CC ;;
+  -b=* | --cflags=* | -cflags=*)
+    CFLAGS="$CFLAGS $optarg" ;;
+  -B=* | --ldflags=* | -ldflags=*)
+    LDFLAGS="$LDFLAGS $optarg" ;;
+  -C=* | --c-compiler=* | -c-compiler=*)
+    CC="$optarg" ;;
+  esac
+done
+
+differ=yes
+if test -z "$option_nocc"; then
+  if test -n "$option_checkdiff"; then
+    cmp -s test.c test.c.old &&
+      differ=
+    rm -f test.c.old
+  fi
+
+  if test -n "$differ"; then
+    if test -z "$option_quiet"; then
+      echo $CC $CFLAGS -c test.c
+    fi
+    $CC $CFLAGS -c test.c || exit 1
+  else
+    if test -z"$option_quiet"; then
+      echo touch test.o
+    fi
+    touch test.o
+  fi
+  if test -z "$option_notempdel"; then
+    rm -f test.c
+  fi
+fi
+
+if test -z "$option_nolink"; then
+  if test -z "$option_quiet"; then
+    echo $CC $LDFLAGS -o test test.o -L/usr/local/lib -lcim 
+  fi
+
+  $CC $LDFLAGS -o test test.o -L/usr/local/lib -lcim  -lm  || exit 1
+fi
+rm -f ./test.shl

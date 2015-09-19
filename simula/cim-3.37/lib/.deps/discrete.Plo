@@ -1,0 +1,10 @@
+discrete.lo: discrete.c /usr/include/stdc-predef.h random.h ../config.h \
+ cim.h
+
+/usr/include/stdc-predef.h:
+
+random.h:
+
+../config.h:
+
+cim.h:

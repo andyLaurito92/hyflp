@@ -1,0 +1,9 @@
+histo.lo: histo.c /usr/include/stdc-predef.h random.h ../config.h cim.h
+
+/usr/include/stdc-predef.h:
+
+random.h:
+
+../config.h:
+
+cim.h:

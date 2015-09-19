@@ -1,0 +1,14 @@
+tsglob.lo: tsglob.c /usr/include/stdc-predef.h cim.h ../config.h \
+ ../limit.h ../config.h simfile.h
+
+/usr/include/stdc-predef.h:
+
+cim.h:
+
+../config.h:
+
+../limit.h:
+
+../config.h:
+
+simfile.h:

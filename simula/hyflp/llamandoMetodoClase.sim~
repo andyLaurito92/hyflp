@@ -1,0 +1,18 @@
+begin 
+	integer cantidadFilas,cantidadColumnas,casillerosEnElMundo,cantidadCelulas;
+
+	! Con InInt leemos un entero desde la entrada
+	cantidadFilas := InInt;   
+	cantidadColumnas := InInt;
+	casillerosEnElMundo := cantidadFilas * cantidadColumnas;	
+	cantidadCelulas := random() * casillerosEnElMundo;	
+	int array celulasVivas(1:cantidadCelulas); 
+	while cantidadCelulas>=0 do
+	        celulasVivas[cantidadCelulas] := 1;
+		cantidadCelulas :=cantidadCelulas-1;
+	begin
+	 
+	end;                      ! Go back to the start of the while loop;
+	OutInt(Total,8);          ! When the condition fails, print the total;
+	OutImage
+end

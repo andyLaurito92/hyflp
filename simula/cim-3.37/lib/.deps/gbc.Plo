@@ -1,0 +1,12 @@
+gbc.lo: gbc.c /usr/include/stdc-predef.h cim.h align.h ../config.h \
+ simfile.h
+
+/usr/include/stdc-predef.h:
+
+cim.h:
+
+align.h:
+
+../config.h:
+
+simfile.h:

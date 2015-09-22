@@ -1,0 +1,16 @@
+begin
+         integer I1,I2,cantidadCelulas,casillerosEnElMundo;   ! Declared at the outermost block level;
+         I1 := 2;         ! Sets a non-zero value in I1;
+         I2 := 10;         ! Sets a non-zero value in I2;
+	 casillerosEnElMundo := 20 * 2;
+         begin
+
+            comment Start a sub-block which can only be entered after
+                    I1 and I2 have had their values set;
+
+	    cantidadCelulas := 6 * 2;	
+            integer array A1(1:I2);   ! Declare with I1 and I2 as bounds;
+            A1(2) := 6;
+         end--of--sub-block;
+         comment Array no longer accessible;
+      end

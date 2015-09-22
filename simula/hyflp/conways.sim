@@ -1,6 +1,9 @@
 Begin
-	class Celula(posX, poxY); Integer posX; Integer posY;
+
+    class Board(initialBoard, totalRows, totalCols); Integer Array initialBoard; Integer totalRows, totalCols;
     begin
+        Integer Array innerBoard(1:totalRows, 1:totalCols);
+
         Procedure show;
         Begin
             Integer row,col;
@@ -85,4 +88,64 @@ Begin
 
         init(initialBoard);
     end;
-end
+
+    class Game(initialBoard); Integer Array initialBoard;
+    begin
+        ref(Board) currentBoard;
+        ref(Board) swapBoard;
+
+        Procedure update;
+        Begin
+            Integer rows, row, cols, col, neighbours_alive;
+            rows := currentBoard.rows;
+            cols := currentBoard.columns;
+            neighbours_alive := 0;
+            
+            For row:= 1 Step 1 Until rows Do
+            Begin
+                For col:=1 Step 1 Until cols Do
+                Begin
+                    neighbours_alive := currentBoard.liveNeighbours(row, col);
+                    If (neighbours_alive = 3) Or (neighbours_alive = 2 And currentBoard.alive(row,col))
+                        Then Begin swapBoard.setAlive(row, col); End
+                        Else Begin swapBoard.setDead(row, col); End;
+                End;
+            End;
+        End;
+
+        Procedure play(step_count); Integer step_count;
+        Begin
+            Integer rows, cols, i;
+
+            For i := 1 Step 1 Until step_count Do
+            Begin
+                update;
+                currentBoard.show;
+                currentBoard.copy(swapBoard);
+            End;
+        End;
+
+        currentBoard :- new Board(initialBoard, UpperBound(initialBoard, 1), UpperBound(initialBoard, 2));
+        swapBoard :- new Board(initialBoard, UpperBound(initialBoard, 1), UpperBound(initialBoard, 2)); 
+    end;
+
+    ref(Game) theGame;
+    ref(Board) aBoard;
+
+    Integer Array blinker(1:5,1:5);
+    Integer Array glider(1:16,1:16);
+    
+    blinker(2,3) := 1;
+    blinker(3,3) := 1;
+    blinker(4,3) := 1;
+
+    glider(2,2) := 1;
+    glider(3,3) := 1;
+    glider(3,4) := 1;
+    glider(4,2) := 1;
+    glider(4,3) := 1;
+
+    theGame :- new Game(glider);
+    theGame.play(30);
+
+End;

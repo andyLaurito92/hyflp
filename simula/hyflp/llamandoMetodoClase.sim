@@ -1,18 +1,88 @@
-begin 
-	integer cantidadFilas,cantidadColumnas,casillerosEnElMundo,cantidadCelulas;
+Begin
+	class Celula(posX, poxY); Integer posX; Integer posY;
+    begin
+        Procedure getX;
+        Begin
+            Integer row,col;
+            OutImage;
+            For row:= 1 Step 1 Until UpperBound (innerBoard, 1) Do
+                Begin
+                For col:= 1 Step 1 Until UpperBound (innerBoard, 2) Do
+                    If innerBoard(row, col) = 1 Then OutText(" # ") 
+                                           Else OutText("   ");
+                OutImage;
+                End;
+        End;
 
-	! Con InInt leemos un entero desde la entrada
-	cantidadFilas := InInt;   
-	cantidadColumnas := InInt;
-	casillerosEnElMundo := cantidadFilas * cantidadColumnas;	
-	cantidadCelulas := random() * casillerosEnElMundo;	
-	integer array celulasVivas(1:cantidadCelulas); 
-	while cantidadCelulas>=0 do
-	        celulasVivas[cantidadCelulas] := 1;
-		cantidadCelulas :=cantidadCelulas-1;
-	begin
-	 
-	end;                      ! Go back to the start of the while loop;
-	OutInt(Total,8);          ! When the condition fails, print the total;
-	OutImage
+        Integer Procedure liveNeighbours(row, col); Integer row,col;
+        Begin
+            Integer live, offsetx, offsety, x, y, upbRow, upbCol;
+            Integer Array offsets(1:3);
+
+            upbRow := UpperBound(innerBoard, 1);
+            upbCol := UpperBound(innerBoard, 2);
+            offsets(1) := -1; offsets(2) := 0; offsets(3) := 1;
+            live := 0;
+
+            For x := 1 Step 1 Until 3 Do
+                For y := 1 Step 1 Until 3 Do
+                Begin
+                    If Not((offsets(x) = 0) And (offsets(y) = 0)) Then Begin
+                        offsetx := mod((row - 1 + offsets(x)), upbRow) +1;
+                        offsety := mod((col - 1 + offsets(y)), upbCol) +1;                   
+                        live := live + innerBoard(offsetx, offsety);
+                    End;
+                End;
+
+            liveNeighbours := live;
+        End;
+
+        Procedure copy(other); ref(Board) other;
+        Begin
+            Integer i, j;
+            For i := 1 Step 1 Until other.rows Do
+                For j := 1 Step 1 Until other.columns Do
+                    innerBoard(i,j) := other.get(i,j);
+        End;
+
+        Procedure init(initial); Integer Array initial;
+        Begin
+            Integer i,j;
+            For i := 1 Step 1 Until UpperBound(initial, 1) Do
+                For j := 1 Step 1 Until UpperBound(initial, 2) Do
+                    innerBoard(i,j) := initial(i,j);
+        End;
+
+        Integer Procedure rows;
+        Begin
+            rows := UpperBound(innerBoard, 1);
+        End;
+
+        Integer Procedure columns;
+        Begin
+            columns := UpperBound(innerBoard, 2);
+        End;
+
+        Integer Procedure get(row, col); Integer row, col;
+        Begin
+            get := innerBoard(row, col);
+        End;
+
+        Boolean Procedure alive(row, col); Integer row, col;
+        Begin
+            alive := innerBoard(row, col) = 1;
+        End;
+
+        Procedure setAlive(row, col); Integer row,col;
+        Begin
+            innerBoard(row, col) := 1;
+        End;
+
+        Procedure setDead(row, col); Integer row,col;
+        Begin
+            innerBoard(row, col) := 0;
+        End;
+
+        init(initialBoard);
+    end;
 end

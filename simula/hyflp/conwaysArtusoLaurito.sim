@@ -29,7 +29,7 @@ Begin
 		Begin
 			For j:=2 Step 1 Until (3+1) Do 
 			Begin
-				If 0.3 * 1000 < 500
+				If j * 200 < 500
 				Then Begin mundo(i,j) := 1 End
 				Else Begin mundo(i,j) := 0 End;
 			End;
@@ -73,13 +73,12 @@ Begin
 				If mundoanterior(i,j) = 1
 				Then 
 				Begin
-					If vecinosvivos < 2 Then mundo(i,j) := 0 End;
-					If vecinosvivos > 2 Then mundo(i,j) := 0 End;
-					If vecinosvivos = 2 Then mundo(i,j) := 1 End;
-				End;
-				Else	
+					If vecinosvivos < 2 Then mundo(i,j) := 0;
+					If vecinosvivos > 2 Then mundo(i,j) := 0;
+					If vecinosvivos = 2 Then mundo(i,j) := 1;
+				End Else	
 				Begin 
-					If vecinosvivos = 3 THEN mund(i,j) := 1 End;
+					If vecinosvivos = 3 THEN mundo(i,j) := 1;
 				End;
 			End;
 		End;
@@ -88,19 +87,17 @@ Begin
 	Boolean Procedure cambia(mundo,mundoanterior); Integer Array mundo; Integer Array mundoanterior;
 	Begin
 		Boolean cambio;
-		cambio := False;
 		Integer i, j;
+		cambio := False;
 		For i:=2 Step 1 Until (3+1) Do 
 		Begin
 			For j:=2 Step 1 Until (3+1) Do 
 			Begin		
-				If Not(mundo[i,j] = mundoanterior[i,j])	Then cambio := True
-				End;
+				If Not(mundo(i,j) = mundoanterior(i,j))	Then cambio := True
 			End;
 		End;
 		cambia := cambio;
 	End;
-
 	Integer iteracion;
 	iteracion := 0;
 	inicializar(mundo,mundoanterior);
@@ -110,9 +107,7 @@ Begin
 	Begin
 		iteracion := iteracion + 1;
 		imprimir(mundo,iteracion);
-		mundoanterior := mundo;
+		copiar(mundo,mundoanterior);
 		avanzar(mundo,mundoanterior)		
 	End;
-
-
-End
+End;

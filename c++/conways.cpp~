@@ -9,9 +9,14 @@ int main(){
 	cin >> ancho;
 	cin >> alto;
 	
-	Tablero untablero(ancho,alto);
-	while(untablero.hayMovimientosDisponibles()){	
-		untablero.avanzarCicloVidaCelulas();
-		untablero.imprimir();	
+	Tablero miTablero(ancho,alto);
+	int numeroIteracion = 0;
+	
+	miTablero.avanzarCicloVidaCelulas();
+	miTablero.imprimir(numeroIteracion++);	
+	while(miTablero.cambioConRespectoAlAnteriorCiclo()){	
+		cout << "Hay movimientos disponibles"<< endl;
+		miTablero.avanzarCicloVidaCelulas();
+		miTablero.imprimir(numeroIteracion++);	
 	}
 }

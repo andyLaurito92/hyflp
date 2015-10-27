@@ -54,14 +54,15 @@ void Tablero::avanzarCicloVidaCelulas(){
 }
 
 void Tablero::imprimir(int iteracion){
-	cout << "___________ITERACION" << iteracion << "___________" << endl;
+	cout << "___________ITERACION " << iteracion << "___________" << endl;
 	for(int i = 1; i < _alto+1; i++){
 		cout << " " << endl;
 		for(int j = 1; j < _ancho+1; j++){
 			if( _mundoActual[i][j] == 1 )	cout << " # ";
-			else				cout << "   ";
+			else				cout << " * ";
 		}
 	} 
+	cout << endl;
 }
 
 bool Tablero::cambioConRespectoAlAnteriorCiclo(){

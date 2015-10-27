@@ -6,3 +6,7 @@ conways.o: conways.cpp
 
 tablero.o: tablero.cpp tablero.h
 	g++ -g -c tablero.cpp
+
+
+clean: 
+	rm conways *.o
